@@ -14,8 +14,8 @@ Without the library:
 
 ```js
 console.time("WITHOUT-LIB");
-for (let index = 0; index < 100_000; index++) {
-  for (let index2 = 0; index2 < 50_000; index2++) {}
+for (let index = 0; index < 100000; index++) {
+  for (let index2 = 0; index2 < 50000; index2++) {}
 }
 console.timeEnd("WITHOUT-LIB");
 ```
@@ -24,14 +24,14 @@ With the library:
 
 ```js
 console.time("WITH-LIB");
-const { SlaveThread } = require("higher-thread");
+const { SlaveThread } = require("high-thread");
 
 const secondary = new SlaveThread();
 
 (async () => {
   const algorithm = secondary.useThread(() => {
-    for (let index = 0; index < 100_000; index++) {
-      for (let index2 = 0; index2 < 50_000; index2++) {}
+    for (let index = 0; index < 100000; index++) {
+      for (let index2 = 0; index2 < 50000; index2++) {}
     }
   });
 
