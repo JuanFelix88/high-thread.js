@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-typescript": "^7.7.4",
+    "@types/jest": "^24.0.23",
+    "babel-loader": "^8.0.6",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "source-map-loader": "^0.2.4",
+    "sucrase": "^3.10.1",
+    "typescript": "^3.7.3"
+  },
+  "dependencies": {
+    "@types/node": "^13.1.6"
+  },
+  "scripts": {
+    "build": "tsc",
+    "bench": "node example/without-lib.js && node example/with-lib.js"
+  },
+  "name": "thread-energy",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT"
+}
