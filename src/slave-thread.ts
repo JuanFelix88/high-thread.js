@@ -1,6 +1,9 @@
 /// <reference path="dependency.ts" />
 
 import { Worker, MessagePort } from "worker_threads";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+import scriptThread from "./template/slave-thread";
 import {
   UnwrapFunction,
   MessageForSlaveThread
@@ -41,9 +44,10 @@ class SlaveThread {
    * @license {MIT}
    */
   constructor(option?: Options) {
-    this.worker = new Worker(
-      require.resolve("./template/boilerplate-active-thread.js")
-    );
+    const code = scriptThread();
+    this.worker = new Worker(code, {
+      eval: true
+    });
     this.threadId = this.worker.threadId;
     this.idCount = 0;
   }

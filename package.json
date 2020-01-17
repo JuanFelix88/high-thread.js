@@ -9,14 +9,17 @@
     "prettier": "^1.19.1",
     "source-map-loader": "^0.2.4",
     "sucrase": "^3.10.1",
+    "ts-jest": "^24.3.0",
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@types/node": "^13.1.6"
+    "@types/node": "^13.1.6",
+    "dot-env": "^0.0.1"
   },
   "scripts": {
     "build": "tsc",
-    "bench": "node example/without-lib.js && node example/with-lib.js"
+    "bench": "node example/without-lib.js && node example/with-lib.js",
+    "test": "jest"
   },
   "name": "thread-energy",
   "version": "1.0.0",

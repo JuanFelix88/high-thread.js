@@ -73,3 +73,8 @@ parentPort.on("message", (data: MessageForSlaveThread) => {
     return registerNewFunction(data.register.unwrapFunction);
   if (data.type === "execute-func") executeFunction(data.executer);
 });
+
+parentPort.on("close", () => {
+  process.removeAllListeners();
+  process.exit();
+});

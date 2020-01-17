@@ -7,7 +7,8 @@
     "declaration": true,
     "declarationMap": false,
     "declarationDir": "./dist",
-    "alwaysStrict": true
+    "alwaysStrict": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
