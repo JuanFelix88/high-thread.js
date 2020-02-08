@@ -3,6 +3,7 @@
 # High Thread.js
 
 ## Table of contents
+
 - [High Thread.js](#high-threadjs)
   - [Table of contents](#table-of-contents)
   - [Overview](#overview)
@@ -15,11 +16,11 @@
 
 ## Overview
 
-**High Thread.js** is an abstraction for Node.js api `woker_threads`, focused on agility and performance during the development of highly complex algorithms or that need parallelism. 
+**High Thread.js** is an abstraction for Node.js api `woker_threads`, focused on agility and performance during the development of highly complex algorithms or that need parallelism.
 
 ## Motivation
 
-**High Thread.js** was motivated to be created due to a deficit of data manipulation and parallel computing in `Node.js`, then encouraged to abstract practical and agile functions and methods to define a robust api that makes sense in the daily use of applications that demand such a need; 
+**High Thread.js** was motivated to be created due to a deficit of data manipulation and parallel computing in `Node.js`, then encouraged to abstract practical and agile functions and methods to define a robust api that makes sense in the daily use of applications that demand such a need;
 
 ## Roadmap
 
@@ -56,9 +57,10 @@ const { threadSpawn } = require("xxxxx");
 
 const arr = [0, 1, 2, 3, 4];
 
-const result = await threadSpawn(() => (
-  arr.map((item, index) => Math.pow(item, index))
-), [arr])
+const result = await threadSpawn(
+  () => arr.map((item, index) => Math.pow(item, index)),
+  [arr]
+);
 
 // prints result
 console.log(result);

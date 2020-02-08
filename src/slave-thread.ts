@@ -1,8 +1,6 @@
 /// <reference path="dependency.ts" />
 
-import { Worker, MessagePort } from "worker_threads";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { Worker } from "worker_threads";
 import scriptThread from "./template/slave-thread";
 import { MessageForSlaveThread } from "./template/boilerplate-active-thread";
 import bindContents from "./bind-contents";

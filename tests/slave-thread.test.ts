@@ -1,5 +1,9 @@
 import { SlaveThread } from "../src";
 
+/**
+ * Assembly test of a function that links two threads;
+ * - For reuse of a specific function;
+ */
 test("Testing SlaveThread useThread", async (): Promise<void> => {
   const { useThread, kill } = new SlaveThread();
 
@@ -18,6 +22,10 @@ test("Testing SlaveThread useThread", async (): Promise<void> => {
   expect([a, b, c]).toEqual([0, 0, 0]);
 }, 1000);
 
+/**
+ * Test using a quick execution of a child thread;
+ * - Fast use case;
+ */
 test("Testing SlaveThread threadSpawn", async (): Promise<void> => {
   const { threadSpawn, kill } = new SlaveThread();
 
@@ -28,6 +36,4 @@ test("Testing SlaveThread threadSpawn", async (): Promise<void> => {
   }, [app]);
 
   kill();
-
-  console.log(result);
 }, 1000);

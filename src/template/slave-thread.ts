@@ -58,8 +58,6 @@ export default function() {
   function registerNewFunction(_a) {
       var contentsDeclaration = _a.contentsDeclaration, textFunction = _a.textFunction, contents = _a.contents, id = _a.id;
 
-      console.log('TESTANDO IN CHILD PROCESS', contentsDeclaration + "\\n" + textFunction)
-
       var funcx = new Function(contentsDeclaration + "\\n" + textFunction).bind(__assign(__assign({}, (contents || void 0)), { require: require }))();
       funcs.push({
           func: funcx,

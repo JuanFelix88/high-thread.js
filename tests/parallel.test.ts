@@ -1,15 +1,14 @@
 import { SlaveThread, useParallel } from "../src";
 
-// prettier-ignore
-(async () => {
+test("Parallel chain", async () => {
   const secondary = new SlaveThread();
   const tertiary = new SlaveThread();
-  
+
   const data = [...Array(500000)].map(() => Math.floor(Math.random() * 20));
-  
+
   data[Math.floor(Math.random() * data.length)] = 35;
-  
-  const func = useParallel([
+
+  const func = useParallel<number>([
     secondary.useThread(() => {
       return data.find(item => item === 35);
     }, [data]),
@@ -17,16 +16,11 @@ import { SlaveThread, useParallel } from "../src";
       return data.reverse().find(item => item === 35);
     }, [data])
   ]);
-  
-  console.time('XXX')
-  await func()
-  console.timeEnd('XXX')
 
-  console.time('XXX')
-  await func()
-  console.timeEnd('XXX')
+  const result = await func();
 
-  console.time('XXX')
-  await func()
-  console.timeEnd('XXX')
-})();
+  expect(result).toEqual([35, 35]);
+
+  secondary.kill();
+  tertiary.kill();
+}, 3000);
