@@ -1,46 +1,68 @@
-<img src="./assets/logo.jpg" style="width: 420px">
+<img src="./assets/logo.jpg" style="width: 350px">
 
 # High Thread.js
 
-### Why _Higher Thread.js_?
+## Table of contents
+- [High Thread.js](#high-threadjs)
+  - [Table of contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Motivation](#motivation)
+  - [Roadmap](#roadmap)
+  - [Installation](#installation)
+  - [Guides](#guides)
+    - [Basics Thread Spawn](#basics-thread-spawn)
+    - [License](#license)
 
-This lib implements a abstract methods with Node.js api with `Worker Threads`. Features a scalable, easy-to-use parallel programming form.
+## Overview
 
-### When should I use it?
+**High Thread.js** is an abstraction for Node.js api `woker_threads`, focused on agility and performance during the development of highly complex algorithms or that need parallelism. 
 
-At times of deadlocks on the main thread is a great example of a wise approach to thread usage, see below:
+## Motivation
 
-Without the library:
+**High Thread.js** was motivated to be created due to a deficit of data manipulation and parallel computing in `Node.js`, then encouraged to abstract practical and agile functions and methods to define a robust api that makes sense in the daily use of applications that demand such a need; 
 
-```js
-console.time("WITHOUT-LIB");
-for (let index = 0; index < 100000; index++) {
-  for (let index2 = 0; index2 < 50000; index2++) {}
-}
-console.timeEnd("WITHOUT-LIB");
+## Roadmap
+
+- Faster;
+- In tests (IMPORTANT);
+- Proper Documentation;
+- no additional modules;
+- Friendly API;
+
+## Installation
+
+**High Thread.js** is available at npm and you can purchase them through the following commands:
+
+npm:
+
+```
+$ npm i xxxxx
 ```
 
-With the library:
+or yarn:
 
-```js
-console.time("WITH-LIB");
-const { SlaveThread } = require("high-thread");
-
-const secondary = new SlaveThread();
-
-(async () => {
-  const algorithm = secondary.useThread(() => {
-    for (let index = 0; index < 100000; index++) {
-      for (let index2 = 0; index2 < 50000; index2++) {}
-    }
-  });
-
-  await algorithm();
-  console.timeEnd("WITH-LIB");
-})();
+```
+$ yarn add xxxxx
 ```
 
-Although the time difference between them may be small (or even smaller than the first implementation), but we must emphasize that in the second code we did not get the main thread lock, this is the point where we want to get.
+## Guides
+
+### Basics Thread Spawn
+
+This bellow is code for a simple thread spawn:
+
+```js
+const { threadSpawn } = require("xxxxx");
+
+const arr = [0, 1, 2, 3, 4];
+
+const result = await threadSpawn(() => (
+  arr.map((item, index) => Math.pow(item, index))
+), [arr])
+
+// prints result
+console.log(result);
+```
 
 ### License
 
