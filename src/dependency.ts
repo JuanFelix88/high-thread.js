@@ -11,6 +11,17 @@ type Contents = {
   [path: string]: any;
 };
 
+type NewContents = Array<any>;
+
+declare interface UnwrapFunction {
+  contentsDeclaration: string;
+  contents?: {
+    [path: string]: any;
+  };
+  textFunction: string;
+  id: number;
+}
+
 interface ContentParsed {
   name: string;
   value: any;

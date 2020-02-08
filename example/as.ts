@@ -1,19 +1,27 @@
 import { SlaveThread } from "../src";
 
-test("Testing SlaveThread", async (): Promise<void> => {
-  const { useThread, kill } = new SlaveThread();
+const { useThread, kill } = new SlaveThread();
 
-  const app = 0;
+const app = 23;
+
+// prettier-ignore
+(async () => {
 
   const functGetApp = useThread(() => {
     return app;
   }, [app]);
-
+  
   const a = await functGetApp();
   const b = await functGetApp();
+  console.time("bench")
   const c = await functGetApp();
+
+  console.timeEnd("bench")
+
+  console.log(a, b, c);
 
   kill();
 
-  expect([a, b, c]).toEqual([0, 0, 0]);
-}, 1000);
+
+
+})();

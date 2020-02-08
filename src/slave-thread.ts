@@ -4,10 +4,8 @@ import { Worker, MessagePort } from "worker_threads";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 import scriptThread from "./template/slave-thread";
-import {
-  UnwrapFunction,
-  MessageForSlaveThread
-} from "./template/boilerplate-active-thread";
+import { MessageForSlaveThread } from "./template/boilerplate-active-thread";
+import bindContents from "./bind-contents";
 
 interface Options {
   initalSleep?: boolean;
@@ -24,9 +22,8 @@ type FunctionDeclaration<T, U> = (
   callback?: (data: U) => void
 ) => Promise<U>;
 
-function getTextDeclareContents(contents?: Contents): string {
-  const names = Object.keys(contents || {});
-  return `const { require, ${names.join(",")} } = this;`;
+function getTextDeclareContents(contentsName?: Array<string>): string {
+  return `const { require, ${contentsName.join(",")} } = this;`;
 }
 
 class SlaveThread {
@@ -35,15 +32,15 @@ class SlaveThread {
   private idCount: number;
   /**
    *
+   *
    * ## Slave Thread
    * - Create a new `Thread` always activated
    * - For intense CPU usage
    * - Asynchronous
    * - Not recomended for E / S
-   *
    * @license {MIT}
    */
-  constructor(option?: Options) {
+  constructor(public option?: Options) {
     const code = scriptThread();
     this.worker = new Worker(code, {
       eval: true
@@ -56,31 +53,48 @@ class SlaveThread {
     return (this.idCount += 1);
   }
 
-  public useThread<T, U>(
+  /**
+   *
+   * 
+   * 
+   * 
+   * 
+
+
+
+   
+   * ### Use Thread
+   * Use this method when you need to create a function that will be executed on the child thread;
+   * - easy to clone data;
+   * - hook;
+   * @example
+   *  const c = 5;
+   *  const funAdd = useThread((a, b) => (a + b + c), [c]);
+   *  const result = await funcAdd(0,1);
+   */
+  public useThread = <T, U>(
     func: (argument: T) => U,
-    contents?: Contents
-  ): FunctionDeclaration<T, U> {
-    let funcText = func.toString();
+    contents: NewContents
+  ): FunctionDeclaration<T, U> => {
+    let funcText = `return (${func.toString()})`;
 
-    const [param] = funcText
-      .match(/^\(*[$\w\s\r,\.]*\)*[\s\r]*=>[\s\r]*{/i)[0]
-      .replace(/^\(/, "")
-      .replace(/\)*[\s\r]*=>[\s\r]*{$/, "")
-      .trim()
-      .split(/\s\n*,\s\n*/);
+    const stack2: string = new Error().stack.split(/at/g)[2].trim();
 
-    funcText = funcText
-      .replace(/^\(*[$\w\s\r,]*\)*[\s\r]*=>[\s\r]*{/i, "")
-      .replace(/}$/, "");
+    const namesContents = bindContents(stack2);
+
+    const contentsObject = {};
+
+    namesContents.forEach(
+      (name, index) => (contentsObject[name] = contents[index])
+    );
 
     const id = this.getNewId();
 
     const unwrapFunction: UnwrapFunction = {
       id,
-      contentsDeclaration: getTextDeclareContents(contents),
+      contentsDeclaration: getTextDeclareContents(namesContents),
       textFunction: funcText,
-      contents: contents || {},
-      params: param ? [param] : void 0
+      contents: contentsObject
     };
 
     const msg: MessageForSlaveThread = {
@@ -111,11 +125,11 @@ class SlaveThread {
         }
       })
     })
-  }
+  };
 
-  public kill(): void {
+  public kill = (): void => {
     this.worker.terminate();
-  }
+  };
 }
 
 export default SlaveThread;

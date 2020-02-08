@@ -1,18 +1,10 @@
+/// <reference path="../dependency.ts" />
+
 import { parentPort } from "worker_threads";
 
 interface BindedFunction {
   id: number;
   func: Function;
-}
-
-export interface UnwrapFunction {
-  params?: string[];
-  contentsDeclaration: string;
-  contents?: {
-    [path: string]: any;
-  };
-  textFunction: string;
-  id: number;
 }
 
 interface ExecuterFunction {
@@ -38,23 +30,19 @@ function registerNewFunction({
   contentsDeclaration,
   textFunction,
   contents,
-  params,
   id
 }: UnwrapFunction): void {
-  const param = params ? params[0] : void 0;
+  console.log("in thread child ", contents);
 
-  const funcWrapped = param
-    ? new Function(param, contentsDeclaration + textFunction).bind({
-        ...(contents || void 0),
-        require: require
-      })
-    : new Function(contentsDeclaration + textFunction).bind({
-        ...(contents || void 0),
-        require: require
-      });
+  const funcx = new Function(contentsDeclaration + "\n" + textFunction).bind({
+    ...(contents || void 0),
+    require: require
+  })();
+
+  console.log(funcx);
 
   funcs.push({
-    func: funcWrapped,
+    func: funcx,
     id
   });
 }
