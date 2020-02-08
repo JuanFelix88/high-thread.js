@@ -18,7 +18,7 @@ const four = new SlaveThread();
       const itens = JSON.parse(readFileSync(resolve(__dirname, "app.json"), "utf8"));
 
       return itens.slice(0,5_000_000).find(item => item === 152)    
-    }),
+    }, []),
     // two
     two.useThread(() => {
       const { readFileSync } = require("fs");
@@ -27,7 +27,7 @@ const four = new SlaveThread();
       const itens = JSON.parse(readFileSync(resolve(__dirname, "app.json"), "utf8"));
 
       return itens.slice(5_000_001,10_000_000).find(item => item === 152)    
-    }),
+    }, []),
     // three
     three.useThread(() => {
       const { readFileSync } = require("fs");
@@ -36,7 +36,7 @@ const four = new SlaveThread();
       const itens = JSON.parse(readFileSync(resolve(__dirname, "app.json"), "utf8"));
 
       return itens.slice(10_000_001,15_000_000).find(item => item === 152)    
-    }),
+    }, []),
     //four
     four.useThread(() => {
       const { readFileSync } = require("fs");
@@ -45,7 +45,7 @@ const four = new SlaveThread();
       const itens = JSON.parse(readFileSync(resolve(__dirname, "app.json"), "utf8"));
 
       return itens.slice(15_000_001,20_000_000).find(item => item === 152)    
-    })
+    }, [])
   ], {
     resolveWhen: data => data !== undefined
   })
